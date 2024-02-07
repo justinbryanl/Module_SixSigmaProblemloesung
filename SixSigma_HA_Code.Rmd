@@ -93,6 +93,8 @@ Cgku <- (Flugdauer_Wahrerwert + 0.1*Flugdauer_Toleranz_value - MSA1_Flugdauer_su
 Cgko <- (MSA1_Flugdauer_summarized$mean_flugdauer + 0.1*Flugdauer_Toleranz_value - Flugdauer_Wahrerwert)/(3*MSA1_Flugdauer_summarized$sd_flugdauer)
 
 Cgk <- min(Cgku,Cgko)
+
+cgHist(MSA1$Flugdauer, target = Flugdauer_Wahrerwert, tolerance = Flugdauer_Toleranz_matrix_normalcopter, n=0.2, ref.interval=pnorm(3)-pnorm(-3),cgOut = FALSE )
 ```
 
 MSA2 - Importing and preprocessing
@@ -213,10 +215,10 @@ boxplot_normalcopter <- ggplot(normalcoptertable, aes( y=Flugdauer)) +
                   geom_hline(aes(yintercept = Flugdauer_Toleranz_matrix_normalcopter[2], col = "USL")) +  
                   scale_color_manual(name = "Lines", values = c(LSL = "blue", USL = "red")) + 
                   theme(axis.title.y=element_blank(),axis.text.y=element_blank(),axis.ticks.y=element_blank()) +
-                  labs(title = "Flugdauer Histogram") + coord_flip()
+                  labs(title = "Flugdauer Boxplot") + coord_flip()
 
 #Creating Run Chart
-cgRunChart(normalcoptertable$Flugdauer, target = Flugdauer_Wahrerwert, tolerance = Flugdauer_Toleranz_matrix_normalcopter, n=2, ref.interval=pnorm(3)-pnorm(-3),cgOut = FALSE )
+cgRunChart(normalcoptertable$Flugdauer, target = Flugdauer_Wahrerwert, tolerance = Flugdauer_Toleranz_matrix_normalcopter, n=1, ref.interval=pnorm(3)-pnorm(-3),cgOut = FALSE )
 
 #displaying the plots
 histogram_normalcopter
@@ -295,7 +297,7 @@ ANOVATable_Fluegellaenge_SSw <-  ANOVATable %>% slice(1:10) %>% group_by(faktors
 SSw_Fluegellaenge <- sum(ANOVATable_Fluegellaenge_SSw$differenz_mean_quadrat)
 
   #SSB
-ANOVATable_Fluegellaenge_SSb <- ANOVATable_Fluegellaenge_SSw %>% summarise(mean_flugdauer = mean(Flugdauer), sd_flugdauer =  (var(Flugdauer)*((n()-1)/n())**(1/2)))
+ANOVATable_Fluegellaenge_SSb <- ANOVATable_Fluegellaenge_SSw %>% summarise(mean_flugdauer = mean(Flugdauer), sd_flugdauer =  (var(Flugdauer)*((n()-1)/n()))**(1/2))
 
 mean_mean_flugdauer_fluegellaenge <- mean(ANOVATable_Fluegellaenge_SSb$mean_flugdauer)
 
@@ -336,7 +338,7 @@ multi_var_fluegellaenge <- ggplot(data = data.frame(u = c(-10,15)),
                             sd = ANOVATable_Fluegellaenge_SSb$mean_flugdauer[2])) +
   geom_vline(aes(xintercept = ANOVATable_Fluegellaenge_SSb$mean_flugdauer[1], col = "mean Faktorstufe 1")) +
   geom_vline(aes(xintercept = ANOVATable_Fluegellaenge_SSb$mean_flugdauer[2], col = "mean Faktorstufe 2")) +
-  scale_colour_manual(values = c("red", "blue","purple", "turquoise")) +
+  scale_colour_manual(values = c("red", "blue","red", "blue")) +
   labs(x = "values",
        y = "densities",
        title = "ANOVA Flügellänge")
@@ -352,7 +354,7 @@ ANOVATable_Papierdichte_SSw <-  ANOVATable %>% slice(11:20) %>% group_by(faktors
 SSw_Papierdichte <- sum(ANOVATable_Papierdichte_SSw$differenz_mean_quadrat)
 
   #SSB
-ANOVATable_Papierdichte_SSb <- ANOVATable_Papierdichte_SSw %>% summarise(mean_flugdauer = mean(Flugdauer), sd_flugdauer =  (var(Flugdauer)*((n()-1)/n())**(1/2)))
+ANOVATable_Papierdichte_SSb <- ANOVATable_Papierdichte_SSw %>% summarise(mean_flugdauer = mean(Flugdauer), sd_flugdauer =  (var(Flugdauer)*((n()-1)/n()))**(1/2))
 
 mean_mean_flugdauer_Papierdichte <- mean(ANOVATable_Papierdichte_SSb$mean_flugdauer)
 
@@ -393,7 +395,7 @@ multi_var_Papierdichte <- ggplot(data = data.frame(u = c(-10,15)),
                             sd = ANOVATable_Papierdichte_SSb$mean_flugdauer[2])) +
   geom_vline(aes(xintercept = ANOVATable_Papierdichte_SSb$mean_flugdauer[1], col = "mean Faktorstufe 1")) +
   geom_vline(aes(xintercept = ANOVATable_Papierdichte_SSb$mean_flugdauer[2], col = "mean Faktorstufe 2")) +
-  scale_colour_manual(values = c("red", "blue","purple", "turquoise")) +
+  scale_colour_manual(values = c("red", "blue","red", "blue")) +
   labs(x = "values",
        y = "densities",
        title = "ANOVA Papierdichte")
@@ -409,7 +411,7 @@ ANOVATable_Koerperlaenge_SSw <-  ANOVATable %>% slice(21:30) %>% group_by(faktor
 SSw_Koerperlaenge <- sum(ANOVATable_Koerperlaenge_SSw$differenz_mean_quadrat)
 
   #SSB
-ANOVATable_Koerperlaenge_SSb <- ANOVATable_Koerperlaenge_SSw %>% summarise(mean_flugdauer = mean(Flugdauer), sd_flugdauer =  (var(Flugdauer)*((n()-1)/n())**(1/2)))
+ANOVATable_Koerperlaenge_SSb <- ANOVATable_Koerperlaenge_SSw %>% summarise(mean_flugdauer = mean(Flugdauer), sd_flugdauer =  (var(Flugdauer)*((n()-1)/n()))**(1/2))
 
 mean_mean_flugdauer_Koerperlaenge <- mean(ANOVATable_Koerperlaenge_SSb$mean_flugdauer)
 
@@ -450,7 +452,7 @@ multi_var_Koerperlaenge <- ggplot(data = data.frame(u = c(-10,15)),
                             sd = ANOVATable_Koerperlaenge_SSb$mean_flugdauer[2])) +
   geom_vline(aes(xintercept = ANOVATable_Koerperlaenge_SSb$mean_flugdauer[1], col = "mean Faktorstufe 1")) +
   geom_vline(aes(xintercept = ANOVATable_Koerperlaenge_SSb$mean_flugdauer[2], col = "mean Faktorstufe 2")) +
-  scale_colour_manual(values = c("red", "blue","purple", "turquoise")) +
+  scale_colour_manual(values = c("red", "blue","red", "blue")) +
   labs(x = "values",
        y = "densities",
        title = "ANOVA Koerperlaenge")
@@ -474,9 +476,20 @@ F_verteilung <- ggplot(data = data.frame(u = c(0,10)),
        title = "F Distribution")
 #displaying
 F_verteilung
+
+ANOVA_summarized <-  ANOVATable %>% group_by(faktorstufen) %>%  summarize(mean_flugdauer = mean(Flugdauer),var_flugdauer = var(Flugdauer)*((n()-1)/n()), sd_flugdauer = (var_flugdauer)**(1/2))
+
+ggplot() + 
+  geom_line(data= ANOVATable, aes(x=wurf, y=Flugdauer, colour=faktorstufen))+
+  geom_point(data= ANOVATable, aes(x=wurf, y=Flugdauer, colour=faktorstufen))+
+  geom_errorbar(data = ANOVA_summarized, aes(x=c(3,7,23,27,17,13), ymin=mean_flugdauer-sd_flugdauer, ymax=mean_flugdauer+sd_flugdauer )) +
+  geom_point(data = ANOVA_summarized, aes(x=c(3,7,23,27,17,13), y = mean_flugdauer ))
+
+  
 ```
 
-Messung DoE - Importing and preprocessing
+geom_boxplot(alpha=0.3) +
+    theme(legend.position="none")Messung DoE - Importing and preprocessing
 
 ```{r }
 versuchsplan <- read_excel("Messung.xlsx", sheet=5)
@@ -484,14 +497,14 @@ versuchsplan <- read_excel("Messung.xlsx", sheet=5)
 #creating facdesign object
 vp <- facDesign(
   k =3,
-  replicates = 6,
+  replicates = 5,
   centerCube = 0
   )
 
 #Parameters for DoE
 names(vp) <- c("Fluegellaenge", "Papierdichte", "Koerperlaenge")
-lows(vp) <- c(70,80,40)
-highs(vp) <- c(90, 100, 60)
+lows(vp) <- c(60,80,40)
+highs(vp) <- c(80, 120, 60)
 units(vp) <- c("mm", "mm", "g/mm^2")
 
 #changing data types and sorting
@@ -593,6 +606,8 @@ ggplot(data = hw_c, mapping = aes(x = C, y = mean)) +
         panel.border = element_blank()) +
   labs(x = "C = Körperlänge", y = "Flugdauer", title = "Effekt-Plot")
 
+test <- vp_df %>% group_by(A,B,C) %>%  summarize(mean= mean(response), standardabweichung = (var(response)*((n()-1)/n()))**(1/2))
+
 ```
 
 Messung DoE - Calculation Wechselwirkung
@@ -661,11 +676,37 @@ Wirkungtabelle <- hw_a %>% rename(hw_a = mean) %>%  mutate(hw_b = hw_b$mean,hw_c
 Wirkungtabelle_result <- Wirkungtabelle[2,] - Wirkungtabelle[1,] 
 
 #linear regression 
-lm_komplett <- lm(response ~ A * B * C , data = vp_df)
+lm_komplett <- lm(response ~ A * B * C, data = vp_df)
 summary(lm_komplett)
 
 #lm signifikant
 
+mod_summary <- summary(lm_komplett)
+
+  pareto_plot <- function(lm, alpha = 0.05) {
+          erklaert <- "t-Wert"
+          effects <- summary(lm)$coefficients[,3][2:length(summary(lm)$coefficients[,3])]
+          effect_names <- names(effects)
+          data <- data.frame(name = effect_names, effects = abs(effects))
+          data$name <- factor(data$name, levels = data$name[order(data$effects, decreasing = TRUE)])
+          t_sig <- abs(qt(alpha/2, df = df.residual(lm)))
+          plot <- ggplot(data = data) + 
+            geom_col(mapping = aes(x = name, y = effects), fill = "lightblue") +
+            geom_hline(yintercept = t_sig, col = "red") +
+            scale_x_discrete(name = NULL) +
+            scale_y_continuous(name = erklaert) +
+            theme_bw() +
+            theme(panel.border = element_blank(),
+                  plot.title = element_text(hjust = 0.5, size = 20),
+                  plot.subtitle = element_text(hjust = 0.5, size = 18),
+                  axis.title = element_text(size = 18),
+                  axis.text = element_text(size = 16),
+                  legend.title = element_text(size = 18),
+                  legend.text = element_text(size = 16)) +
+            labs(title = "Standardisierte Haupteffekte und Wechselwirkungen",
+                 subtitle = substitute(paste(t[Krit] == t_sig, " für ", alpha == a), list(t_sig = round(t_sig, 3), a = alpha)))
+          return(plot)}
+   pareto_plot(lm_komplett, alpha = 0.05)
 
 ```
 
@@ -711,10 +752,10 @@ boxplot_improvedcopter <- ggplot(improvedcoptertable, aes( y=Flugdauer)) +
                   geom_hline(aes(yintercept = Flugdauer_Toleranz_matrix_improvedcopter[2], col = "USL")) +  
                   scale_color_manual(name = "Lines", values = c(LSL = "blue", USL = "red")) + 
                   theme(axis.title.y=element_blank(),axis.text.y=element_blank(),axis.ticks.y=element_blank()) +
-                  labs(title = "Flugdauer Histogram") + coord_flip()
+                  labs(title = "Flugdauer Papiercopter") + coord_flip()
 
 #Creating Run Chart
-cgRunChart(improvedcoptertable$Flugdauer, target = Ziel_Flugdauer, tolerance = Flugdauer_Toleranz_matrix_improvedcopter, n=2, ref.interval=pnorm(3)-pnorm(-3),cgOut = FALSE )
+cgRunChart(improvedcoptertable$Flugdauer, target = Ziel_Flugdauer, tolerance = Flugdauer_Toleranz_matrix_improvedcopter, n=1, ref.interval=pnorm(3)-pnorm(-3),cgOut = FALSE )
 
 #displaying the plots
 histogram_improvedcopter
